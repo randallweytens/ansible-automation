@@ -1,0 +1,11 @@
+[routers:vars]
+user=randall
+ansible_network_os=ios
+ansible_user=randall
+ansible_ssh_pass=randall
+new_user=kellen
+new_user_password=123
+
+[routers]
+Router_6
+Router_7

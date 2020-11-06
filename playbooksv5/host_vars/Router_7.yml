@@ -1,0 +1,20 @@
+ansible_host: 192.168.11.131
+interfaces:
+  FastEthernet0/0:
+    description: WAN
+    ip: '192.168.11.131'
+    mask: '255.255.255.0'
+  FastEthernet0/1:
+    description: CORE_LAN
+    ip: '192.168.12.131'
+    mask: '255.255.255.0'
+eigrp:
+  AS: '1'
+  networks:
+    - '10.0.0.0'
+    - '172.16.0.0'
+    - '192.168.11.0'
+    - '192.168.12.0'
+    - '192.168.13.0'
+static_routes:
+  - '0.0.0.0 0.0.0.0 192.168.11.131'

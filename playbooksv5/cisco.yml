@@ -1,0 +1,23 @@
+---
+  - name: cisco test
+    hosts: routers
+    gather_facts: no
+    connection: network_cli
+
+    vars:
+      user: randall
+      # ansible_python_interpreter: /usr/bin/python3
+
+    tasks:
+      - name: get sho run output
+        ios_command:
+          commands: show run
+        register: config_file
+
+      - debug: var=config_file
+
+      - name: add user to router
+        ios_command:
+          commands:
+            - configure terminal
+            - username {{ new_user }} privilege 15 password 0 {{ new_user_password }}

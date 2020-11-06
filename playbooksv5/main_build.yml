@@ -1,0 +1,45 @@
+---
+  - name: CISCO CONFIG BUILDER
+    hosts: routers
+    gather_facts: no
+    connection: network_cli
+
+    tasks:
+      # - name: TASK 1 - IMPORT DEVICE VARIABLES
+      #   include_vars:
+      #     file: ./device_vars.yml
+      #     name: device_vars
+
+      - name: TASK 2 - CREATE FINISHED_CONFIGS DIRECTORY
+        file:
+          path: ./finished_router_configs
+          state: directory
+
+      - name: TASK 3 - BUILD CONFIG FILES FROM TEMPLATES
+        template:
+          src: ./templates/router_config.j2
+          dest: ./finished_router_configs/{{ inventory_hostname }}.cfg
+
+
+      # - name: TASK 1 - IMPORT DEVICE VARIABLES
+      #   include_vars:
+      #     file: ./device_vars.yml
+      #     name: device_vars
+
+
+      - name: TASK 5 - TEMPLATES
+        ios_command:
+          commands: show run
+        register: config_file
+
+      - debug: var=config_file
+
+      - name: TASK 6 - LOAD ROUTER CONFIG
+        ios_config:
+          match: none
+          src: ./finished_router_configs/{{ inventory_hostname }}.cfg
+
+      - name: TASK 7- SAVE ROUTER CONFIG
+        ios_command:
+          commands:
+            - write
